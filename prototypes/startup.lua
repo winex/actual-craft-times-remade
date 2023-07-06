@@ -74,5 +74,16 @@ script.on_event(
                 Calculator.openGui(event.player_index)
             end
         end
+        -- MiscAddon
+        if (global.ACTR and event.element.name == "ACTR_remove_button") then
+            game.players[event.player_index].print("ACTR-MiscAddon; CallOrder D; see Log!")
+            game.write_file("ACTR-MiscAddon.log", "\n" .. "CallOrder D", true)
+            game.write_file("ACTR-MiscAddon.log", "\nEvent: " .. serpent.block(event), true)
+            game.write_file("ACTR-MiscAddon.log", "\nEvent.element: " .. serpent.block(event.element), true)
+            game.write_file("ACTR-MiscAddon.log", "\nEvent.element.name: " .. serpent.block(event.element.name), true)
+--             game.write_file("ACTR-MiscAddon.log", "\nEvent.element.help(): " .. serpent.block(event.element.help()), true)
+            game.write_file("ACTR-MiscAddon.log", "\nEvent.element.children_names: " .. serpent.block(event.element.children_names), true)
+            Calculator.removeEntity(event, event.element, event.player_index)
+        end -- MiscAddon
     end
 )
