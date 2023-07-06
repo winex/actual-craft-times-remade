@@ -97,19 +97,16 @@ Calculator.openGui = function(playerIndex)
 end
 
 -- MiscAddon
-Calculator.removeEntity = function(event, entity, playerIndex)
-    game.players[event.player_index].print("ACTR-MiscAddon; CallOrder B; see Log!")
-    game.write_file("ACTR-MiscAddon.log", "\n" .. "CallOrder B", true)
---     game.write_file("ACTR-MiscAddon.log", "\nEntity.help(): " .. serpent.block(entity.help()), true)
-    game.write_file("ACTR-MiscAddon.log", "\nPlayerIndex: " .. serpent.block(playerIndex), true)
+Calculator.removeEntity = function(element, playerIndex)
+    -- game.write_file("ACTR-MiscAddon.log", "\n" .. "CallOrder C", true)
     if (playerIndex) then
         local player = game.players[playerIndex]
-        if (entity and player.gui.left.ACTR_Calculator_Frame) then
-            game.players[event.player_index].print("ACTR-MiscAddon; CallOrder C; see Log!")
-            game.write_file("ACTR-MiscAddon.log", "\n" .. "CallOrder C", true)
-            game.write_file("ACTR-MiscAddon.log", "\n" .. serpent.block(entity.children_names[1]), true)
-            if (player.gui.left.ACTR_Calculator_Frame[entity.children_names[1] .. "_entity_flow"]) then
-                player.gui.left.ACTR_Calculator_Frame[entity.children_names[1] .. "_entity_flow"].destroy()
+        local frame = player.gui.left.ACTR_Calculator_Frame
+        if (element and frame) then
+            -- game.write_file("ACTR-MiscAddon.log", "\n" .. "CallOrder D", true)
+            local entry = frame[element.children_names[1] .. "_entity_flow"]
+            if (entry) then
+                entry.destroy()
             end
         end
     end
@@ -153,21 +150,29 @@ local function addEntity(entity, playerIndex)
                 createProductionMultiplierInElement(control, entity, 1,multiplierMax)
 
                 -- MiscAddon
-                local removeButton = entity_flow.add {
+                local removeButton = header.add {
                      type = "sprite-button",
                      name = "ACTR_remove_button",
                      tooltip = {"gui.ACTR_remove_button"},
                      sprite = "item/deconstruction-planner",
-                     style = "mod_gui_button"
+                     style = "slot_button",
+                     direction = "horizontal"
                 }
+                removeButton.style.size = {24, 24}
                 removeButton.add { type="label", name=entity.unit_number }
-                -- TODO: get entity.unit_number or other unique identifier into event information and select from global
-                player.print("ACTR-MiscAddon; CallOrder A; see Log!")
-                game.write_file("ACTR-MiscAddon.log", "\n" .. "CallOrder A", true)
-                game.write_file("ACTR-MiscAddon.log", "\nEntity: " .. serpent.block(entity), true)
-                game.write_file("ACTR-MiscAddon.log", "\nEntity.unit_number: " .. serpent.block(entity.unit_number), true)
---                 game.write_file("ACTR-MiscAddon.log", "\nEntity_flow.help(): " .. serpent.block(entity_flow.help()), true)
---                 game.write_file("ACTR-MiscAddon.log", "\nRemoveButton.help(): " .. serpent.block(removeButton.help()), true)  -- MiscAddon
+                if (player.name == "zipacna" or player.name == "Resipvaleus") then
+                    local easterEgg = header.add {
+                        type="sprite-button",
+                        name="ACTR_easterEgg",
+                        tooltip="Hello " .. player.name,
+                        sprite="item/rail-chain-signal",
+                        style="mod_gui_button",
+                        direction="horizontal"
+                    }
+                    easterEgg.style.size = {24, 24}
+                end
+                -- game.write_file("ACTR-MiscAddon.log", "\n" .. "Player.name: " .. player.name, true)
+                -- game.write_file("ACTR-MiscAddon.log", "\n" .. "CallOrder A", true)  -- MiscAddon
             end
         end
     end
