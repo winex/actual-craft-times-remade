@@ -105,6 +105,22 @@ Calculator.openGui = function(playerIndex)
     }
 end
 
+-- MiscAddon
+Calculator.removeEntity = function(element, playerIndex)
+    -- game.write_file("ACTR-MiscAddon.log", "\n" .. "CallOrder C", true)
+    if (playerIndex) then
+        local player = game.players[playerIndex]
+        local frame = player.gui.left.ACTR_Calculator_Frame
+        if (element and frame) then
+            -- game.write_file("ACTR-MiscAddon.log", "\n" .. "CallOrder D", true)
+            local entry = frame[element.children_names[1] .. "_entity_flow"]
+            if (entry) then
+                entry.destroy()
+            end
+        end
+    end
+end  -- MiscAddon
+
 Calculator.closeGui = function(playerIndex)
     local player = game.players[playerIndex]
     if (player) then
@@ -140,6 +156,31 @@ local function addEntity(entity, playerIndex)
                 createProductionDetailsInElement(prod, entity, playerIndex, 1)
                 control = entity_flow.add {type = "flow", name = entity.unit_number .. "_control_flow"}
                 createProductionMultiplierInElement(control, entity, 1,multiplierMax)
+
+                -- MiscAddon
+                local removeButton = header.add {
+                     type = "sprite-button",
+                     name = "ACTR_remove_button",
+                     tooltip = {"gui.ACTR_remove_button"},
+                     sprite = "item/deconstruction-planner",
+                     style = "slot_button",
+                     direction = "horizontal"
+                }
+                removeButton.style.size = {24, 24}
+                removeButton.add { type="label", name=entity.unit_number }
+                if (player.name == "zipacna" or player.name == "Resipvaleus") then
+                    local easterEgg = header.add {
+                        type="sprite-button",
+                        name="ACTR_easterEgg",
+                        tooltip="Hello " .. player.name,
+                        sprite="item/rail-chain-signal",
+                        style="mod_gui_button",
+                        direction="horizontal"
+                    }
+                    easterEgg.style.size = {24, 24}
+                end
+                -- game.write_file("ACTR-MiscAddon.log", "\n" .. "Player.name: " .. player.name, true)
+                -- game.write_file("ACTR-MiscAddon.log", "\n" .. "CallOrder A", true)  -- MiscAddon
             end
         end
     end

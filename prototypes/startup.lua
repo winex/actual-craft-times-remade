@@ -30,6 +30,9 @@ function player_setup(playerIndex)
         sprite = "item/assembling-machine-1",
         style = "mod_gui_button"
     }
+
+    -- MiscAddon
+    -- game.write_file("ACTR-MiscAddon.log", "Start Empty Log")  -- MiscAddon
 end
 
 script.on_configuration_changed(
@@ -74,5 +77,11 @@ script.on_event(
                 Calculator.openGui(event.player_index)
             end
         end
+        -- MiscAddon
+        -- game.write_file("ACTR-MiscAddon.log", "\n" .. "Button Style: " .. event.element.style.name, true)
+        if (global.ACTR and event.element.name == "ACTR_remove_button") then
+            -- game.write_file("ACTR-MiscAddon.log", "\n" .. "CallOrder B", true)  -- serpent.block(event.element.children_names[1])
+            Calculator.removeEntity(event.element, event.player_index)
+        end -- MiscAddon
     end
 )
